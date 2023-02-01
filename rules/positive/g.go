@@ -7,7 +7,7 @@ import (
 
 var Positive = "Positive"
 
-func VerifyPositive(fieldName string, fieldValue any, fieldValueType string, ruleValue string) string {
+func VerifyPositive(fieldName string, fieldValue any, fieldValueType string, ruleValue string, ruleFieldName string) string {
 	if fieldValue.(int64) <= 0 {
 		return fmt.Sprintf(message.Positive, fieldName)
 	}

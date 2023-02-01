@@ -15,7 +15,7 @@ func In(val ...any) string {
 	return "In:" + strings.Join(valArr, ",")
 }
 
-func VerifyIn(fieldName string, fieldValue any, fieldValueType string, ruleValue string) string {
+func VerifyIn(fieldName string, fieldValue any, fieldValueType string, ruleValue string, ruleFieldName string) string {
 	ruleValArr := strings.Split(ruleValue, ",")
 	if !helper.IsInArr(fieldValue, fieldValueType, ruleValArr) {
 		return fieldName + "必须是" + ruleValue + "其中之一"

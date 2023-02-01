@@ -8,7 +8,7 @@ func Ne(val any) string {
 	return "Ne:" + fmt.Sprintf("%v", val)
 }
 
-func VerifyNe(fieldName string, fieldValue any, fieldValueType string, ruleValue string) string {
+func VerifyNe(fieldName string, fieldValue any, fieldValueType string, ruleValue string, ruleFieldName string) string {
 	if !(fmt.Sprintf("%v", fieldValue) != ruleValue) {
 		return fieldName + "必须不等于" + ruleValue
 	}

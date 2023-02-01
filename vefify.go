@@ -4,23 +4,25 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tangpanqing/gin-validation/helper"
 	"github.com/tangpanqing/gin-validation/rules/between"
+	"github.com/tangpanqing/gin-validation/rules/different"
 	"github.com/tangpanqing/gin-validation/rules/eq"
 	"github.com/tangpanqing/gin-validation/rules/ge"
 	"github.com/tangpanqing/gin-validation/rules/gt"
 	"github.com/tangpanqing/gin-validation/rules/in"
 	"github.com/tangpanqing/gin-validation/rules/le"
-	"github.com/tangpanqing/gin-validation/rules/lengthBetween"
-	"github.com/tangpanqing/gin-validation/rules/lengthEq"
-	"github.com/tangpanqing/gin-validation/rules/lengthGe"
-	"github.com/tangpanqing/gin-validation/rules/lengthGt"
-	"github.com/tangpanqing/gin-validation/rules/lengthIn"
-	"github.com/tangpanqing/gin-validation/rules/lengthLe"
-	"github.com/tangpanqing/gin-validation/rules/lengthLt"
-	"github.com/tangpanqing/gin-validation/rules/lengthNe"
+	"github.com/tangpanqing/gin-validation/rules/lenBetween"
+	"github.com/tangpanqing/gin-validation/rules/lenEq"
+	"github.com/tangpanqing/gin-validation/rules/lenGe"
+	"github.com/tangpanqing/gin-validation/rules/lenGt"
+	"github.com/tangpanqing/gin-validation/rules/lenIn"
+	"github.com/tangpanqing/gin-validation/rules/lenLe"
+	"github.com/tangpanqing/gin-validation/rules/lenLt"
+	"github.com/tangpanqing/gin-validation/rules/lenNe"
 	"github.com/tangpanqing/gin-validation/rules/lt"
 	"github.com/tangpanqing/gin-validation/rules/ne"
 	"github.com/tangpanqing/gin-validation/rules/positive"
 	"github.com/tangpanqing/gin-validation/rules/required"
+	"github.com/tangpanqing/gin-validation/rules/same"
 	"strings"
 )
 
@@ -29,11 +31,14 @@ type Validation struct {
 	err        string
 }
 
-type HandlerFunc func(key string, value any, valueType string, ruleValue string) string
+type HandlerFunc func(fieldName string, fieldValue any, fieldValueType string, ruleValue string, ruleFieldName string) string
 
 var funcMap = map[string]HandlerFunc{
 	"Required": required.VerifyRequired,
 	"Positive": positive.VerifyPositive,
+
+	"Same":      same.VerifySame,
+	"Different": different.VerifyDifferent,
 
 	"Eq":      eq.VerifyEq,
 	"Ne":      ne.VerifyNe,
@@ -44,14 +49,14 @@ var funcMap = map[string]HandlerFunc{
 	"Between": between.VerifyBetween,
 	"In":      in.VerifyIn,
 
-	"LengthEq":      lengthEq.VerifyLengthEq,
-	"LengthNe":      lengthNe.VerifyLengthNe,
-	"LengthGt":      lengthGt.VerifyLengthGt,
-	"LengthGe":      lengthGe.VerifyLengthGe,
-	"LengthLt":      lengthLt.VerifyLengthLt,
-	"LengthLe":      lengthLe.VerifyLengthLe,
-	"LengthBetween": lengthBetween.VerifyLengthBetween,
-	"LengthIn":      lengthIn.VerifyLengthIn,
+	"LenEq":      lenEq.VerifyLenEq,
+	"LenNe":      lenNe.VerifyLenNe,
+	"LenGt":      lenGt.VerifyLenGt,
+	"LenGe":      lenGe.VerifyLenGe,
+	"LenLt":      lenLt.VerifyLenLt,
+	"LenLe":      lenLe.VerifyLenLe,
+	"LenBetween": lenBetween.VerifyLenBetween,
+	"LenIn":      lenIn.VerifyLenIn,
 }
 
 func (v *Validation) Error() string {
@@ -107,26 +112,19 @@ func (v *Validation) handleValue(fieldName string, fieldValue any, valueFrom str
 		for i := 0; i < len(rules); i++ {
 			ruleInfo := strings.Split(rules[i], ":")
 			ruleName := ruleInfo[0]
-
 			ruleValue := ""
 			if len(ruleInfo) > 1 {
 				ruleValue = ruleInfo[1]
 			}
+			ruleFieldName := ""
+
+			if ruleName == "Same" || ruleName == "Different" {
+				ruleFieldName = ruleValue
+				ruleValue = v.getOtherValue(valueFrom, ruleFieldName)
+			}
 
 			funcName := funcMap[ruleName]
-			v.err = funcName(fieldName, fieldValue, fieldValueType, ruleValue)
-
-			//if ruleName == "Same" {
-			//	if value.(string) != v.getOtherValue(valueFrom, ruleValue) {
-			//		v.err = key + "的值必须等于" + ruleInfo[1] + "的值"
-			//	}
-			//}
-			//
-			//if ruleName == "Different" {
-			//	if value.(string) == v.getOtherValue(valueFrom, ruleValue) {
-			//		v.err = key + "的值必须不等于" + ruleValue + "的值"
-			//	}
-			//}
+			v.err = funcName(fieldName, fieldValue, fieldValueType, ruleValue, ruleFieldName)
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package lengthIn
+package lenIn
 
 import (
 	"fmt"
@@ -6,18 +6,18 @@ import (
 	"strings"
 )
 
-func LengthIn(val ...any) string {
+func LenIn(val ...any) string {
 	var valArr []string
 	for i := 0; i < len(val); i++ {
 		valArr = append(valArr, fmt.Sprintf("%v", val[i]))
 	}
 
-	return "LengthIn:" + strings.Join(valArr, ",")
+	return "LenIn:" + strings.Join(valArr, ",")
 }
 
-func VerifyLengthIn(fieldName string, fieldValue any, fieldValueType string, ruleValue string) string {
+func VerifyLenIn(fieldName string, fieldValue any, fieldValueType string, ruleValue string, ruleFieldName string) string {
 	ruleValArr := strings.Split(ruleValue, ",")
-	thisValue := helper.GetThisInt64ValueLength(fieldValue, fieldValueType)
+	thisValue := helper.GetThisInt64ValueLen(fieldValue, fieldValueType)
 
 	if !helper.IsInArr(helper.Int64ToStr(thisValue), fieldValueType, ruleValArr) {
 		return fieldName + "的长度必须是" + ruleValue + "其中之一"

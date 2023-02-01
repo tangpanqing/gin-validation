@@ -14,7 +14,7 @@ func Between(min any, max any) string {
 	return "Between:" + strings.Join(valArr, ",")
 }
 
-func VerifyBetween(fieldName string, fieldValue any, fieldValueType string, ruleValue string) string {
+func VerifyBetween(fieldName string, fieldValue any, fieldValueType string, ruleValue string, ruleFieldName string) string {
 	ruleValueArr := strings.Split(ruleValue, ",")
 
 	if fieldValueType == "Int64" {

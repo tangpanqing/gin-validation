@@ -7,18 +7,19 @@ import (
 	"github.com/tangpanqing/gin-validation/rules/gt"
 	"github.com/tangpanqing/gin-validation/rules/in"
 	"github.com/tangpanqing/gin-validation/rules/le"
-	"github.com/tangpanqing/gin-validation/rules/lengthBetween"
-	"github.com/tangpanqing/gin-validation/rules/lengthEq"
-	"github.com/tangpanqing/gin-validation/rules/lengthGe"
-	"github.com/tangpanqing/gin-validation/rules/lengthGt"
-	"github.com/tangpanqing/gin-validation/rules/lengthIn"
-	"github.com/tangpanqing/gin-validation/rules/lengthLe"
-	"github.com/tangpanqing/gin-validation/rules/lengthLt"
-	"github.com/tangpanqing/gin-validation/rules/lengthNe"
+	"github.com/tangpanqing/gin-validation/rules/lenBetween"
+	"github.com/tangpanqing/gin-validation/rules/lenEq"
+	"github.com/tangpanqing/gin-validation/rules/lenGe"
+	"github.com/tangpanqing/gin-validation/rules/lenGt"
+	"github.com/tangpanqing/gin-validation/rules/lenIn"
+	"github.com/tangpanqing/gin-validation/rules/lenLe"
+	"github.com/tangpanqing/gin-validation/rules/lenLt"
+	"github.com/tangpanqing/gin-validation/rules/lenNe"
 	"github.com/tangpanqing/gin-validation/rules/lt"
 	"github.com/tangpanqing/gin-validation/rules/ne"
 	"github.com/tangpanqing/gin-validation/rules/positive"
 	"github.com/tangpanqing/gin-validation/rules/required"
+	"github.com/tangpanqing/gin-validation/rules/same"
 )
 
 //Required 某字段必须存在,不能为空字符串
@@ -28,8 +29,8 @@ var Required = required.Required
 var Positive = positive.Positive
 
 //Same 某字段必须等于另一个字段
-func Same(other string) string {
-	return "Same:" + other
+func Same(otherField string) string {
+	return same.Same(otherField)
 }
 
 //Different 某字段必须不等于另一个字段
@@ -77,42 +78,42 @@ func In(val ...any) string {
 	return in.In(val...)
 }
 
-//LengthEq 某字段的长度必须等于某值
-func LengthEq(val int64) string {
-	return lengthEq.LengthEq(val)
+//LenEq 某字段的长度必须等于某值
+func LenEq(val int64) string {
+	return lenEq.LenEq(val)
 }
 
-//LengthNe 某字段的长度必须等于某值
-func LengthNe(val int64) string {
-	return lengthNe.LengthNe(val)
+//LenNe 某字段的长度必须等于某值
+func LenNe(val int64) string {
+	return lenNe.LenNe(val)
 }
 
-//LengthGt 某字段的长度必须大于某值
-func LengthGt(val int64) string {
-	return lengthGt.LengthGt(val)
+//LenGt 某字段的长度必须大于某值
+func LenGt(val int64) string {
+	return lenGt.LenGt(val)
 }
 
-//LengthGe 某字段的长度必须大于等于某值
-func LengthGe(val int64) string {
-	return lengthGe.LengthGe(val)
+//LenGe 某字段的长度必须大于等于某值
+func LenGe(val int64) string {
+	return lenGe.LenGe(val)
 }
 
-//LengthLt 某字段的长度必须小于某值
-func LengthLt(val int64) string {
-	return lengthLt.LengthLt(val)
+//LenLt 某字段的长度必须小于某值
+func LenLt(val int64) string {
+	return lenLt.LenLt(val)
 }
 
-//LengthLe 某字段的长度必须小于等于某值
-func LengthLe(val int64) string {
-	return lengthLe.LengthLe(val)
+//LenLe 某字段的长度必须小于等于某值
+func LenLe(val int64) string {
+	return lenLe.LenLe(val)
 }
 
-//LengthBetween 某字段的长度必须在两个值之间
-func LengthBetween(min int64, max int64) string {
-	return lengthBetween.LengthBetween(min, max)
+//LenBetween 某字段的长度必须在两个值之间
+func LenBetween(min int64, max int64) string {
+	return lenBetween.LenBetween(min, max)
 }
 
-//LengthIn 某字段的长度必须是其中某一个
-func LengthIn(val ...any) string {
-	return lengthIn.LengthIn(val...)
+//LenIn 某字段的长度必须是其中某一个
+func LenIn(val ...any) string {
+	return lenIn.LenIn(val...)
 }

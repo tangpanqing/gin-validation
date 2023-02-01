@@ -9,7 +9,7 @@ func Eq(val any) string {
 	return "Eq:" + fmt.Sprintf("%v", val)
 }
 
-func VerifyEq(fieldName string, fieldValue any, fieldValueType string, ruleValue string) string {
+func VerifyEq(fieldName string, fieldValue any, fieldValueType string, ruleValue string, ruleFieldName string) string {
 	if !(fmt.Sprintf("%v", fieldValue) == ruleValue) {
 		return fmt.Sprintf(message.Eq, fieldName, ruleValue)
 	}

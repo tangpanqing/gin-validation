@@ -46,7 +46,7 @@ func GetThisStringValue(value any, valueType string) string {
 	return thisValue
 }
 
-func GetThisInt64ValueLength(value any, valueType string) int64 {
+func GetThisInt64ValueLen(value any, valueType string) int64 {
 	var thisValue int64
 
 	if valueType == "String" {

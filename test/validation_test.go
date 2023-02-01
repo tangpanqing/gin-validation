@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	v "github.com/tangpanqing/gin-validation"
-	"github.com/tangpanqing/gin-validation/message"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -18,6 +17,10 @@ func TestAll(t *testing.T) {
 			"desc":  {""},
 			"age":   {"18"},
 			"score": {"90.5"},
+
+			"password":      {"123456"},
+			"newPassword":   {"1234567"},
+			"reNewPassword": {"1234567"},
 		},
 	}
 
@@ -52,55 +55,17 @@ func TestAll(t *testing.T) {
 	va.PostInt64("age", v.In(18))
 	va.PostFloat64("score", v.In(90.5))
 
-	va.PostString("name", v.LengthEq(4))
-	va.PostString("name", v.LengthNe(5))
-	va.PostString("name", v.LengthGt(3))
-	va.PostString("name", v.LengthGe(4))
-	va.PostString("name", v.LengthLt(5))
-	va.PostString("name", v.LengthLe(4))
-	va.PostString("name", v.LengthBetween(3, 5))
-	va.PostString("name", v.LengthIn(4))
+	va.PostString("name", v.LenEq(4))
+	va.PostString("name", v.LenNe(5))
+	va.PostString("name", v.LenGt(3))
+	va.PostString("name", v.LenGe(4))
+	va.PostString("name", v.LenLt(5))
+	va.PostString("name", v.LenLe(4))
+	va.PostString("name", v.LenBetween(3, 5))
+	va.PostString("name", v.LenIn(4))
+
+	va.PostString("newPassword", v.Different("password"))
+	va.PostString("newPassword", v.Same("reNewPassword"))
 
 	fmt.Println(va.Error(), "==")
-
-	//testRequired(c, "name1")
-	//testLengthEq(c, "name", 3)
-	//testLengthGt(c, "name", 4)
-	//testLengthBetween(c, "name", 5, 6)
-}
-
-func testRequired(c *gin.Context, key string) {
-	va := v.New(c)
-	va.PostString(key, v.Required)
-
-	if va.Error() != fmt.Sprintf(message.Required, key) {
-		fmt.Println("testRequired found err with key = " + key)
-	}
-}
-
-func testLengthEq(c *gin.Context, key string, length int64) {
-	va := v.New(c)
-	va.PostString(key, v.LengthEq(length))
-
-	if va.Error() != fmt.Sprintf(message.LengthEq, key, length) {
-		fmt.Println("testLengthEq found err with key = " + key)
-	}
-}
-
-func testLengthGt(c *gin.Context, key string, length int64) {
-	va := v.New(c)
-	va.PostString(key, v.LengthGt(length))
-
-	if va.Error() != fmt.Sprintf(message.LengthGt, key, length) {
-		fmt.Println("testLengthGt found err with key = " + key)
-	}
-}
-
-func testLengthBetween(c *gin.Context, key string, min int64, max int64) {
-	va := v.New(c)
-	va.PostString(key, v.LengthBetween(min, max))
-
-	if va.Error() != fmt.Sprintf(message.LengthBetween, key, min, max) {
-		fmt.Println("testLengthBetween found err with key = " + key)
-	}
 }
