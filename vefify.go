@@ -124,7 +124,10 @@ func (v *Validation) handleValue(fieldName string, fieldValue any, valueFrom str
 			}
 
 			funcName := funcMap[ruleName]
-			v.err = funcName(fieldName, fieldValue, fieldValueType, ruleValue, ruleFieldName)
+			e := funcName(fieldName, fieldValue, fieldValueType, ruleValue, ruleFieldName)
+			if e != "" {
+				v.err = e
+			}
 		}
 	}
 }
